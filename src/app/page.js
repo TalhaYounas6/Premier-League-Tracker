@@ -1,95 +1,91 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { useState, useEffect } from "react";
+import MatchTracker from "@/components/MatchTracker";
+import GameWeekSelector from "@/components/GameWeekSelector";
+import { fetchFixtures, processFixtures } from "@/lib/api/footballApi";
+import styles from "@/styles/page.module.css";
+import "@/styles/global.css";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [matches, setMatches] = useState([]);
+  const [allMatches, setAllMatches] = useState([]);
+  const [gameWeeks, setGameWeeks] = useState([]);
+  const [selectedGameWeek, setSelectedGameWeek] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  // Fetch and process data
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchFixtures();
+        const { gameWeeks, currentRound, matches } = processFixtures(data);
+
+        setGameWeeks(gameWeeks);
+        setSelectedGameWeek(currentRound);
+        setAllMatches(matches);
+      } catch (err) {
+        setError("Failed to fetch data: " + err.message);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+    const intervalId = setInterval(loadData, 60000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Filter matches by game week
+  useEffect(() => {
+    if (selectedGameWeek && allMatches.length > 0) {
+      setMatches(
+        allMatches.filter((match) => match.gameWeek === selectedGameWeek)
+      );
+    }
+  }, [selectedGameWeek, allMatches]);
+
+  // Group matches by date (UI logic stays here)
+  const matchesByDate = matches.reduce((acc, match) => {
+    acc[match.date] = [...(acc[match.date] || []), match];
+    return acc;
+  }, {});
+
+  // Render (unchanged)
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
+
+  const gameWeekNumber = selectedGameWeek
+    ? selectedGameWeek.split(" - ")[1]
+    : "";
+
+  const handleGameWeekChange = (gameWeek) => {
+    setSelectedGameWeek(gameWeek);
+  };
+  return (
+    <main className={styles.main}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Premier League</h1>
+
+        <div className={styles.gameWeekContainer}>
+          <div className={styles.gameWeek}>Game Week {gameWeekNumber}</div>
+          <GameWeekSelector
+            gameWeeks={gameWeeks}
+            selectedGameWeek={selectedGameWeek}
+            onGameWeekChange={handleGameWeekChange}
+          />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {Object.keys(matchesByDate).length > 0 ? (
+          <MatchTracker matchesByDate={matchesByDate} />
+        ) : (
+          <div className={styles.noMatches}>
+            No matches found for the selected game week.
+          </div>
+        )}
+      </div>
+    </main>
   );
 }

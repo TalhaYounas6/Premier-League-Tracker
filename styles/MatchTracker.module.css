@@ -1,0 +1,159 @@
+.matchCard {
+  padding: 18px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.matchCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.matchCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 30px;
+  width: 1px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    #fff,
+    #fff 20px,
+    rgba(0, 150, 0, 0.03) 20px,
+    rgba(0, 150, 0, 0.03) 40px
+  );
+}
+
+.matchStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.liveMatch .matchStatus::before {
+  content: "●";
+  color: #e53e3e;
+  font-size: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+.finishedMatch .matchStatus::before {
+  content: "✓";
+  color: #2b6cb0;
+}
+
+.scheduledMatch .matchStatus::before {
+  content: "⏱";
+  color: #718096;
+  font-size: 12px;
+}
+
+.team {
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.team:last-child {
+  border-bottom: none;
+}
+
+.teamName {
+  font-weight: 600;
+  position: relative;
+  padding-left: 24px;
+}
+
+.teamName::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  background: #eee;
+  border-radius: 50%;
+}
+
+.score {
+  background: #f8f9fa;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: "Roboto Mono", monospace;
+}
+
+.dateHeading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 24px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(0, 150, 0, 0.1);
+  position: relative;
+}
+
+.dateHeading::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: #38a169;
+}
+
+.liveMatch {
+  border-left: 4px solid #e53e3e;
+  background: linear-gradient(to right, #fffaf0 0%, #fff 50%);
+}
+
+.liveIndicator {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e53e3e;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-left: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .matchCard {
+    padding: 16px 12px;
+  }
+
+  .teamName {
+    font-size: 15px;
+    padding-left: 20px;
+  }
+
+  .teamName::before {
+    width: 16px;
+    height: 16px;
+  }
+
+  .dateHeading {
+    font-size: 15px;
+  }
+}

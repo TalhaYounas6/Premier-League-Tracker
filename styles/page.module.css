@@ -1,0 +1,65 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #c44747;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  background-color: rgb(215, 199, 199);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.gameWeekContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.gameWeek {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #e53e3e;
+}
+
+.noMatches {
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
+  font-size: 16px;
+}
