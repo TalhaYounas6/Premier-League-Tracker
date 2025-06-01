@@ -6,6 +6,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .matchCard:hover {
@@ -13,7 +14,7 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.matchCard::before {
+/* .matchCard::before {
   content: "";
   position: absolute;
   top: 0;
@@ -23,10 +24,10 @@
   background: repeating-linear-gradient(
     #fff,
     #fff 20px,
-    rgba(0, 150, 0, 0.03) 20px,
-    rgba(0, 150, 0, 0.03) 40px
+    rgba(121, 255, 121, 0.03) 20px,
+    rgba(241, 129, 8, 0.03) 40px
   );
-}
+} */
 
 .matchStatus {
   display: flex;
@@ -61,9 +62,9 @@
   border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
 }
 
-.team:last-child {
+/* .team:last-child {
   border-bottom: none;
-}
+} */
 
 .teamName {
   font-weight: 600;
@@ -71,7 +72,7 @@
   padding-left: 24px;
 }
 
-.teamName::before {
+/* .teamName::before {
   content: "";
   position: absolute;
   left: 0;
@@ -81,7 +82,7 @@
   height: 18px;
   background: #eee;
   border-radius: 50%;
-}
+} */
 
 .score {
   background: #f8f9fa;

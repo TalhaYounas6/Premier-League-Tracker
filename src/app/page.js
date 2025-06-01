@@ -47,13 +47,13 @@ export default function Home() {
     }
   }, [selectedGameWeek, allMatches]);
 
-  // Group matches by date (UI logic stays here)
+  // Group matches by date
   const matchesByDate = matches.reduce((acc, match) => {
     acc[match.date] = [...(acc[match.date] || []), match];
     return acc;
   }, {});
 
-  // Render (unchanged)
+  // Render
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 

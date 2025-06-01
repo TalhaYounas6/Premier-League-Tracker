@@ -38,7 +38,7 @@ export default function MatchTracker({ matchesByDate }) {
                 <div className={styles.matchStatus}>
                   {match.status === "LIVE" && (
                     <span className={styles.liveIndicator}>
-                      ● LIVE {match.time}'
+                      ● LIVE {match.time}&apos;
                     </span>
                   )}
                   {match.status === "FINISHED" && "Full Time"}
